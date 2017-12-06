@@ -20,6 +20,7 @@ class Game
   end
 
   def who_wins?
+    p @score.show
     if @score.dealer > 21 && @score.player > 21
       @bank.draw
       'У обоих игроков перебор. Ничья.'
@@ -84,7 +85,7 @@ class Game
 
   def show_cards
     p "Карты Дилера: #{@dealers_cards}"
-    p "Карты игрока #{@players_name}: #{@players_cards}"
+    p "Карты Игрока #{@players_name}: #{@players_cards}"
   end
 
   def dealer_turn
@@ -118,7 +119,6 @@ class Game
       give_one_card
       score_player
       dealer_turn
-      p "Текущие очки игрока #{@players_name}: #{@score.player}"
       :break if six_cards?
     when 3
       p "Карты Дилера: #{@dealers_cards}"

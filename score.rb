@@ -7,7 +7,7 @@ class Score
   end
 
   def show
-    "Очки. Игрок: #{@player}, Дилер: #{@dealer}"
+    "Текущие очки. Игрок: #{@player}, Дилер: #{@dealer}"
   end
 
   def clear
