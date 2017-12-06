@@ -1,30 +1,3 @@
-require_relative 'bank'
-require_relative 'score'
-
-CARDS_ARRAY = [{ '2♠' => 2 }, { '3♠' => 3 }, { '4♠' => 4 }, { '5♠' => 5 },
-               { '6♠' => 6 }, { '7♠' => 7 }, { '8♠' => 8 }, { '9♠' => 9 },
-               { '10♠' => 10 }, { 'J♠' => 10 }, { 'Q♠' => 10 }, { 'K♠' => 10 },
-               { 'A♠' => nil }, { '2♣' => 2 }, { '3♣' => 3 }, { '4♣' => 4 },
-               { '5♣' => 5 }, { '6♣' => 6 }, { '7♣' => 7 }, { '8♣' => 8 },
-               { '9♣' => 9 }, { '10♣' => 10 }, { 'J♣' => 10 }, { 'Q♣' => 10 },
-               { 'K♣' => 10 }, { 'A♣' => nil }, { '2♦' => 2 }, { '3♦' => 3 },
-               { '4♦' => 4 }, { '5♦' => 5 }, { '6♦' => 6 }, { '7♦' => 7 },
-               { '8♦' => 8 }, { '9♦' => 9 }, { '10♦' => 10 }, { 'J♦' => 10 },
-               { 'Q♦' => 10 }, { 'K♦' => 10 }, { 'A♦' => nil }, { '2♥' => 2 },
-               { '3♥' => 3 }, { '4♥' => 4 }, { '5♥' => 5 }, { '6♥' => 6 },
-               { '7♥' => 7 }, { '8♥' => 8 }, { '9♥' => 9 }, { '10♥' => 10 },
-               { 'J♥' => 10 }, { 'Q♥' => 10 }, { 'K♥' => 10 }, { 'A♥' => nil }]
-
-PLAYERS_MENU_1 = "
-  1.Пропустить
-  2.Добавить карту
-  3.Открыть карты
-  ".freeze
-
-PLAYERS_MENU_2 = "
-1.Пропустить
-2.Открыть карты
-".freeze
 
 class Game
   def initialize
@@ -42,7 +15,7 @@ class Game
       'Дилер выиграл'
     else
       @bank.award_player
-      'Игрок выиграл'
+      "Игрок #{@players_name} выиграл"
     end
   end
 
@@ -55,7 +28,7 @@ class Game
       'У обоих игроков поровну очков. Ничья.'
     elsif @score.dealer > 21
       @bank.award_player
-      'У Дилера перебор.Выигрывает Игрок.'
+      'У Дилера перебор.Выигрывает Игрок #{@players_name}.'
     elsif @score.player > 21
       @bank.award_dealer
       'У Игрока перебор.Выигрывает Дилер.'
@@ -63,8 +36,8 @@ class Game
     end
   end
 
-  def skip
-    p 'Пропускаю ход'
+  def skip(*name)
+    p (name[0].nil?) ? 'Дилер пропускает ход' : "#{@players_name} пропускает ход"
   end
 
   def give_two_cards
@@ -104,7 +77,7 @@ class Game
     @dealers_cards.clear
   end
 
-  def one_card_dealer
+  def one_card_to_dealer
     give_one_card
     score_dealer
   end
@@ -116,9 +89,9 @@ class Game
 
   def dealer_turn
     if @score.dealer < 11 && @dealers_cards.count < 3
-      one_card_dealer
+      one_card_to_dealer
     elsif @score.dealer < 17 && @dealers_cards.count < 3
-      send %i[skip one_card_dealer].sample
+      send %i[skip one_card_to_dealer].sample
     else skip
     end
   end
@@ -139,7 +112,7 @@ class Game
     players_choice = gets.chomp.to_i
     case players_choice
     when 1
-      skip
+      skip(@players_name)
       dealer_turn
     when 2
       give_one_card
@@ -162,7 +135,7 @@ class Game
     players_choice = gets.chomp.to_i
     case players_choice
     when 1
-      skip
+      skip(@players_name)
       dealer_turn
       :break if six_cards?
     when 2
@@ -196,6 +169,7 @@ class Game
           break if menu_two == :break
         end
       end
+          print "*********************\n "
     end
   end
 
@@ -208,6 +182,5 @@ class Game
       answer = gets.chomp
     end
   end
-end
 
-Game.new.run
+end
