@@ -11,7 +11,7 @@ class Bank
   end
 
   def show_money
-    "Деньги игроков. Дилер: #{@dealer_cash}$, Игрок: #{@player_cash}$"
+    "Деньги игроков. Дилер: #{@dealer_cash}$, Игрок: #{@player_cash}$\n"
   end
 
   def banking
